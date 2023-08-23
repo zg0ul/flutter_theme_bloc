@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:theme_bloc/core/bloc/theme_bloc.dart';
 import 'package:theme_bloc/home_page.dart';
 
 void main() {
@@ -11,14 +13,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return BlocProvider(
+      create: (context) => ThemeBloc()..add(GetCurrentThemeEvent()),
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, state) {
+          if (state is LoadedThemeState) {
+            return MaterialApp(
+              title: 'Flutter Demo',
+              theme: state.themeData,
+              home: const HomePage(),
+            );
+          }
+          return Container();
+        },
       ),
-      home: const HomePage(),
     );
   }
 }
-

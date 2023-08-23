@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:theme_bloc/core/app_theme.dart';
+import 'package:theme_bloc/core/bloc/theme_bloc.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -22,7 +24,11 @@ class SettingsPage extends StatelessWidget {
                 itemAppTheme.name,
                 style: appThemeData[itemAppTheme]!.textTheme.titleMedium,
               ),
-              onTap: () {},
+              onTap: () {
+                context
+                    .read<ThemeBloc>()
+                    .add(ThemeChangedEvent(theme: itemAppTheme));
+              },
             ),
           );
         },
